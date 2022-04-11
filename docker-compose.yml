@@ -1,0 +1,18 @@
+version: '3'
+services:
+  shp2geojson:
+    image: shp2geojson:v1
+    build:
+      context: lambda-functions/shp2geojson
+      dockerfile: Dockerfile
+    environment:
+        - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+        - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+        - SHAPEFILE_ZIP_URL=https://raw.githubusercontent.com/wmgeolab/geoBoundaries/729d59ed25f7bcc7664fc6ca58755b4e8567e80c/releaseData/gbOpen/UKR/ADM0/geoBoundaries-UKR-ADM0-all.zip
+        - S3_PATH=s3://ds-data-projects/test_mercy
+        - COUNTRY=UKR
+    volumes:
+        - ./lambda-functions/shp2geojson/src:/mnt
+    working_dir: /mnt
+    ports:
+        - "9000:8080"
